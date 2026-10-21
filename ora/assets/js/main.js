@@ -223,18 +223,21 @@ function initLeadForm() {
     const zapierPayload = {
       fullName: fullName,
       phoneNumber: fullPhoneNumber,
-      countryCode: countryCode,
       landingPageUrl: window.location.href,
       submissionDate: new Date().toISOString(),
+      countryCode: countryCode,
       portfolio: "ORA Developers (Solana East Gardinn, ZED East, ZED West)"
     };
 
     try {
-      await fetch("https://hooks.zapier.com/hooks/catch/25429357/uclzmpn/", {
+      const zapierResponse = await fetch("https://hooks.zapier.com/hooks/catch/25429357/uclzmpn/", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify(zapierPayload),
       });
-      console.log("Zapier webhook dispatched successfully");
+      console.log("Zapier webhook dispatched successfully:", zapierResponse.status);
     } catch (zapierError) {
       console.error("Zapier webhook error:", zapierError);
     }
