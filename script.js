@@ -175,36 +175,22 @@ function initFormHandling() {
         submitBtn.disabled = true;
         if (spinner) spinner.style.display = 'inline-block';
 
-        // 1. Dispatch to Zapier Webhook
-        const zapierData = {
-            fullName: nameInput.value.trim(),
-            phoneNumber: cleanPhone,
-            landingPageUrl: window.location.href,
-            submissionDate: new Date().toISOString(),
-            destination: destinationInput ? destinationInput.value : '',
-            developer: formData.get('developer') || '',
-            budget: formData.get('budget') || '',
-            portfolio: "Properties-M Tier-1 Portfolio Consultation"
-        };
-
-        try {
-            await fetch("https://hooks.zapier.com/hooks/catch/25429357/uclzmpn/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(zapierData),
-            });
-            console.log("Zapier webhook dispatched successfully");
-        } catch (zapierError) {
-            console.error("Zapier webhook error:", zapierError);
-        }
-
-        // Check if placeholder access key for Web3Forms email fallback
+        // Check if placeholder access key
         if (!accessKey || accessKey === 'YOUR_WEB3FORMS_ACCESS_KEY_HERE') {
-            resetForm();
-            openModal();
-            triggerGoogleConversion();
+            console.log('%c[Properties-M Lead Captured - Test Mode]', 'color: #c5a880; font-weight: bold; font-size: 14px;');
+            console.log('Lead Details:', {
+                name: nameInput.value,
+                phone: cleanPhone,
+                destination: destinationInput ? destinationInput.value : 'General',
+                developer: formData.get('developer'),
+                budget: formData.get('budget')
+            });
+
+            setTimeout(() => {
+                resetForm();
+                openModal();
+                triggerGoogleConversion();
+            }, 1000);
             return;
         }
 

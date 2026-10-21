@@ -169,33 +169,21 @@ function initFormHandling() {
         submitBtn.disabled = true;
         if (spinner) spinner.style.display = 'inline-block';
 
-        // 4. Dispatch to Zapier Webhook
-        const zapierData = {
-            fullName: nameInput.value.trim(),
-            phoneNumber: cleanPhone,
-            landingPageUrl: window.location.href,
-            submissionDate: new Date().toISOString(),
-            portfolio: "Hassan Allam Properties (Park Central, The Valleys, Grova)"
-        };
-
-        try {
-            await fetch("https://hooks.zapier.com/hooks/catch/25429357/uclzmpn/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(zapierData),
-            });
-            console.log("Zapier webhook dispatched successfully");
-        } catch (zapierError) {
-            console.error("Zapier webhook error:", zapierError);
-        }
-
-        // Check if user is using the placeholder key for Web3Forms email fallback
+        // Check if user is using the placeholder key
         if (accessKey === 'YOUR_WEB3FORMS_ACCESS_KEY_HERE') {
-            resetFormState();
-            openModal();
-            triggerGoogleConversion();
+            console.log('%c[Lead Captured - Test Mode]', 'color: #c5a880; font-weight: bold; font-size: 14px;');
+            console.log('Lead Details:', {
+                name: nameInput.value,
+                phone: cleanPhone
+            });
+            console.log('To route this form submission to your Gmail live, please register a free access key at https://web3forms.com and paste it in index.html (line ~92).');
+            
+            setTimeout(() => {
+                resetFormState();
+                openModal();
+                triggerGoogleConversion();
+            }, 1200);
+            
             return;
         }
 
