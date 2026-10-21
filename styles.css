@@ -859,6 +859,10 @@ h1, h2, h3, h4, .serif-font {
     box-shadow: 0 0 50px rgba(197, 168, 128, 0.12);
 }
 
+.spotlight-banner.ora-banner {
+    background: radial-gradient(circle at 80% 50%, rgba(197, 168, 128, 0.18) 0%, rgba(12, 16, 26, 0.94) 70%), url('images/solana_east.jpg') center/cover;
+}
+
 .spotlight-badge {
     display: inline-flex;
     align-items: center;
