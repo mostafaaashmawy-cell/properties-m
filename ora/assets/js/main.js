@@ -180,7 +180,14 @@ function initLeadForm() {
       return;
     }
 
-    const fullPhoneNumber = `${countryCode} ${rawPhone}`;
+    let fullPhoneNumber = rawPhone;
+    if (rawPhone.startsWith('+')) {
+      fullPhoneNumber = rawPhone;
+    } else if (rawPhone.startsWith('00')) {
+      fullPhoneNumber = '+' + rawPhone.slice(2);
+    } else {
+      fullPhoneNumber = `${countryCode} ${rawPhone}`.trim();
+    }
 
     // Loading State
     const originalBtnText = submitBtn.innerHTML;
@@ -205,16 +212,19 @@ function initLeadForm() {
 
     try {
       // 100% Direct Zapier Webhook Dispatch
-      const response = await fetch("https://hooks.zapier.com/hooks/catch/25429357/uclzmpn/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Zapier returned status ${response.status}`);
+      // Note: Headers are intentionally omitted to avoid triggering an OPTIONS preflight request that Zapier's webhook server rejects.
+      try {
+        await fetch("https://hooks.zapier.com/hooks/catch/25429357/uclzmpn/", {
+          method: "POST",
+          body: JSON.stringify(data),
+        });
+      } catch (fetchErr) {
+        console.warn("Standard fetch failed, attempting mode: no-cors fallback:", fetchErr);
+        await fetch("https://hooks.zapier.com/hooks/catch/25429357/uclzmpn/", {
+          method: "POST",
+          mode: "no-cors",
+          body: JSON.stringify(data),
+        });
       }
 
       console.log("Zapier webhook dispatched successfully:", data);
