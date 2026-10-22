@@ -193,113 +193,80 @@ function initLeadForm() {
       PROCESSING...
     `;
 
-    // Lead Object Payload
-    const leadData = {
-      timestamp: new Date().toISOString(),
-      formattedTime: new Date().toLocaleString(),
+    // Lead Object Payload strictly matching requested Zapier schema
+    const data = {
       fullName: fullName,
       phoneNumber: fullPhoneNumber,
-      countryCode: countryCode,
-      portfolio: "ORA Developers — Solana East (Gardinn), ZED East & ZED West",
-      source: window.location.href,
-      targetRecipients: [
-        "Rahma@irtkaz.com",
-        "Mostafa.a.ashmawy@gmail.com",
-        "Mostafa.ashmawy@irtkaz.com"
-      ]
-    };
-
-    // Save lead to local storage backup archive
-    try {
-      const existingLeads = JSON.parse(localStorage.getItem('ora_inquiries') || '[]');
-      existingLeads.push(leadData);
-      localStorage.setItem('ora_inquiries', JSON.stringify(existingLeads));
-      console.log('Lead archived locally:', leadData);
-    } catch (err) {
-      console.error('LocalStorage error:', err);
-    }
-
-    // 1. Primary Dispatch: Zapier Webhook
-    const zapierPayload = {
-      fullName: fullName,
-      phoneNumber: fullPhoneNumber,
-      landingPageUrl: window.location.href,
-      submissionDate: new Date().toISOString(),
+      landingPageUrl: window.location.href,       // Captures the full page URL
+      submissionDate: new Date().toISOString(),   // Captures the exact date and time
       countryCode: countryCode,
       portfolio: "ORA Developers (Solana East Gardinn, ZED East, ZED West)"
     };
 
     try {
-      const zapierResponse = await fetch("https://hooks.zapier.com/hooks/catch/25429357/uclzmpn/", {
+      // 100% Direct Zapier Webhook Dispatch
+      const response = await fetch("https://hooks.zapier.com/hooks/catch/25429357/uclzmpn/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(zapierPayload),
+        body: JSON.stringify(data),
       });
-      console.log("Zapier webhook dispatched successfully:", zapierResponse.status);
-    } catch (zapierError) {
-      console.error("Zapier webhook error:", zapierError);
-    }
 
-    // 2. Secondary Dispatch: Secure Email Routing to team recipients
-    try {
-      await fetch("https://formsubmit.co/ajax/Rahma@irtkaz.com", {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          _subject: `New Lead: ${fullName} - ORA Developers Portfolio (properties-m.com)`,
-          _cc: "Mostafa.a.ashmawy@gmail.com,Mostafa.ashmawy@irtkaz.com",
-          _template: "table",
-          "Full Name": fullName,
-          "Phone Number": fullPhoneNumber,
-          "Country Code": countryCode,
-          "Portfolio": "ORA Developers (Solana East Gardinn, ZED East, ZED West)",
-          "Lead Source": "properties-m.com/ora Landing Page",
-          "Date & Time": leadData.formattedTime
-        })
-      });
-    } catch (apiError) {
-      console.warn("Direct email dispatch network fallback triggered:", apiError);
-    }
+      if (!response.ok) {
+        throw new Error(`Zapier returned status ${response.status}`);
+      }
 
-    // Reset button state
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = originalBtnText;
+      console.log("Zapier webhook dispatched successfully:", data);
 
-    // Reset form fields
-    form.reset();
-    if (consentInput) consentInput.checked = true;
-    if (countryCodeInput) countryCodeInput.value = '+20';
-    const flagDisplay = document.getElementById('selectedCountryFlag');
-    const codeDisplay = document.getElementById('selectedCountryCodeText');
-    if (flagDisplay) flagDisplay.textContent = '🇪🇬';
-    if (codeDisplay) codeDisplay.textContent = '+20';
+      // Save lead to local storage backup archive
+      try {
+        const existingLeads = JSON.parse(localStorage.getItem('ora_inquiries') || '[]');
+        existingLeads.push(data);
+        localStorage.setItem('ora_inquiries', JSON.stringify(existingLeads));
+      } catch (err) {
+        console.error('LocalStorage error:', err);
+      }
 
-    // Run Google Ads conversion tracking code whenever a user submits the lead form
-    if (typeof gtag_report_conversion === 'function') {
-      gtag_report_conversion();
-    } else if (typeof gtag === 'function') {
-      gtag('event', 'conversion', {
-        'send_to': 'AW-17705943670/x9dFCPPh9bobEPaE7fpB'
-      });
-      gtag('event', 'conversion', {
-        'send_to': 'AW-18495474156/EvjICOTemJQdEOyTqvNE'
-      });
-    }
+      // Reset form fields
+      form.reset();
+      if (consentInput) consentInput.checked = true;
+      if (countryCodeInput) countryCodeInput.value = '+20';
+      const flagDisplay = document.getElementById('selectedCountryFlag');
+      const codeDisplay = document.getElementById('selectedCountryCodeText');
+      if (flagDisplay) flagDisplay.textContent = '🇪🇬';
+      if (codeDisplay) codeDisplay.textContent = '+20';
 
-    // Show Confirmation Modal
-    if (modalBackdrop) {
-      modalBackdrop.classList.add('show');
-    }
+      // Run Google Ads conversion tracking code
+      if (typeof gtag_report_conversion === 'function') {
+        gtag_report_conversion();
+      } else if (typeof gtag === 'function') {
+        gtag('event', 'conversion', {
+          'send_to': 'AW-17705943670/x9dFCPPh9bobEPaE7fpB'
+        });
+        gtag('event', 'conversion', {
+          'send_to': 'AW-18495474156/EvjICOTemJQdEOyTqvNE'
+        });
+      }
 
-    // Update modal WhatsApp button with pre-filled message
-    if (modalWhatsAppBtn) {
-      const encodedMsg = encodeURIComponent(`Hello, I just registered my interest for the ORA Developers portfolio on properties-m.com. My name is ${fullName} (${fullPhoneNumber}). Please provide me with the available brochures and inventory.`);
-      modalWhatsAppBtn.href = `https://wa.me/201033373331?text=${encodedMsg}`;
+      // Show Confirmation Modal
+      if (modalBackdrop) {
+        modalBackdrop.classList.add('show');
+      }
+
+      // Update modal WhatsApp button with pre-filled message
+      if (modalWhatsAppBtn) {
+        const encodedMsg = encodeURIComponent(`Hello, I just registered my interest for the ORA Developers portfolio on properties-m.com. My name is ${fullName} (${fullPhoneNumber}). Please provide me with the available brochures and inventory.`);
+        modalWhatsAppBtn.href = `https://wa.me/201033373331?text=${encodedMsg}`;
+      }
+
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      // Reset button state
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnText;
     }
   });
 
