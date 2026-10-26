@@ -247,7 +247,30 @@ function initLeadCaptureForm() {
     };
 
     try {
-      // Zapier Production Webhook
+      // 1. Submit Primary Lead to Web3Forms API
+      const web3FormData = new FormData(leadForm);
+      web3FormData.set('access_key', '9f6d054c-a955-4ed1-b85d-91c7f8b0a16a');
+      web3FormData.set('name', fullName);
+      web3FormData.set('phone', fullPhone);
+      web3FormData.set('country', countryNameVal);
+      web3FormData.set('country_code', countryCodeVal);
+      web3FormData.set('page_url', window.location.href);
+      web3FormData.set('subject', `New Lead: Hyde Park Portfolio — ${fullName} (${fullPhone})`);
+      web3FormData.set('from_name', 'Properties-M Real Estate Advisory');
+      web3FormData.set('project', 'Hyde Park Developments (One Hyde Park, Terraces, Central)');
+
+      try {
+        const web3Response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: web3FormData
+        });
+        const web3Result = await web3Response.json();
+        console.log('Web3Forms response:', web3Result);
+      } catch (w3Err) {
+        console.warn('Web3Forms dispatch warning:', w3Err);
+      }
+
+      // 2. Secondary Zapier Production Webhook Dispatch
       try {
         await fetch("https://hooks.zapier.com/hooks/catch/25429357/uclzmpn/", {
           method: "POST",
@@ -255,7 +278,7 @@ function initLeadCaptureForm() {
         });
       } catch (postErr) {
         // Fallback for strict browser CORS handling
-        console.warn("Direct POST failed, attempting no-cors fallback", postErr);
+        console.warn("Direct Zapier POST failed, attempting no-cors fallback", postErr);
         await fetch("https://hooks.zapier.com/hooks/catch/25429357/uclzmpn/", {
           method: "POST",
           mode: "no-cors",
@@ -263,7 +286,7 @@ function initLeadCaptureForm() {
         });
       }
 
-      // Google Ads Conversion Event
+      // 3. Google Ads Conversion Event
       if (typeof gtag_report_conversion === 'function') {
         gtag_report_conversion();
       } else if (typeof gtag === 'function') {
