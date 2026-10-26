@@ -1,7 +1,7 @@
 /**
  * HYDE PARK PORTFOLIO — BY PROPERTIES-M.COM
  * Custom Client Engine: Country Code Dropdown (Zero Mojibake Vector SVG),
- * Form Handling, Zapier Webhook Lead Routing, Google Ads Conversion Tracking,
+ * Form Handling, Web3Forms API Lead Routing, Google Ads Conversion Tracking,
  * Unit Category Tabs & Smooth Interactive Retouches.
  */
 
@@ -189,7 +189,7 @@ function initSmoothScroll() {
 }
 
 /**
- * Lead Capture Form Processing with Zapier Webhook & Google Ads Conversion
+ * Lead Capture Form Processing with Web3Forms API & Google Ads Conversion
  */
 function initLeadCaptureForm() {
   const leadForm = document.getElementById('hpLeadForm');
@@ -238,16 +238,11 @@ function initLeadCaptureForm() {
       landingPageUrl: window.location.href,
       submissionDate: new Date().toISOString(),
       projectFocus: 'Hyde Park Developments Portfolio (One Hyde Park, Terraces, Hyde Park Central)',
-      source: 'Hyde Park Landing Page (/Hydepark) - properties-m.com',
-      routedEmails: [
-        'Rahma@irtkaz.com',
-        'Mostafa.a.ashmawy@gmail.com',
-        'Mostafa.ashmawy@irtkaz.com'
-      ]
+      source: 'Hyde Park Landing Page (/Hydepark) - properties-m.com'
     };
 
     try {
-      // 1. Submit Primary Lead to Web3Forms API
+      // Submit Lead to Web3Forms API
       const web3FormData = new FormData(leadForm);
       web3FormData.set('access_key', '9f6d054c-a955-4ed1-b85d-91c7f8b0a16a');
       web3FormData.set('name', fullName);
@@ -267,26 +262,10 @@ function initLeadCaptureForm() {
         const web3Result = await web3Response.json();
         console.log('Web3Forms response:', web3Result);
       } catch (w3Err) {
-        console.warn('Web3Forms dispatch warning:', w3Err);
+        console.warn('Web3Forms dispatch error:', w3Err);
       }
 
-      // 2. Secondary Zapier Production Webhook Dispatch
-      try {
-        await fetch("https://hooks.zapier.com/hooks/catch/25429357/uclzmpn/", {
-          method: "POST",
-          body: JSON.stringify(payload)
-        });
-      } catch (postErr) {
-        // Fallback for strict browser CORS handling
-        console.warn("Direct Zapier POST failed, attempting no-cors fallback", postErr);
-        await fetch("https://hooks.zapier.com/hooks/catch/25429357/uclzmpn/", {
-          method: "POST",
-          mode: "no-cors",
-          body: JSON.stringify(payload)
-        });
-      }
-
-      // 3. Google Ads Conversion Event
+      // Google Ads Conversion Event
       if (typeof gtag_report_conversion === 'function') {
         gtag_report_conversion();
       } else if (typeof gtag === 'function') {
