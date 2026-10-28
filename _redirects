@@ -2,3 +2,5 @@
 /hydepark /Hydepark/ 301
 /hyde-park/* /Hydepark/:splat 301
 /hydepark/* /Hydepark/:splat 301
+/hp /HP/ 301
+/hp/* /HP/:splat 301

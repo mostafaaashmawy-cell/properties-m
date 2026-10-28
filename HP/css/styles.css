@@ -1,0 +1,363 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+/* ==========================================================================
+   PROPERTIES-M.COM — HYDE PARK PORTFOLIO (/HP)
+   ULTRA-CHIC EDITORIAL DARK MODE REAL ESTATE DESIGN SYSTEM
+   Theme: Midnight Obsidian Luxury & Calm Architectural Depth
+   Palette:
+     • Deep Obsidian Canvas: #070A11 / #0B0F17
+     • Midnight Card Base: #0F1422 / #131A29
+     • Floating Frosted Glass: rgba(17, 24, 39, 0.78)
+     • Subtle Cool Metallic Borders: rgba(255, 255, 255, 0.08) / rgba(255, 255, 255, 0.16)
+     • Luminous Platinum Headlines: #F8FAFC / #FFFFFF
+     • Muted Architectural Slate: #94A3B8 / #64748B
+     • Signature WhatsApp Emerald: #25D366 (Hover: #20BD5A)
+   Typography:
+     • Classical Monumental: 'Cinzel', serif
+     • Editorial Elegance: 'Playfair Display', Georgia, serif
+     • Modern High-Legibility Sans: 'Plus Jakarta Sans', 'Inter', sans-serif
+   ========================================================================== */
+
+:root {
+  --bg-canvas: #070A11;
+  --bg-deep: #0B0F17;
+  --bg-surface: #0F1523;
+  --bg-card: rgba(16, 23, 38, 0.82);
+  --bg-card-hover: rgba(22, 32, 52, 0.90);
+  --bg-pill: rgba(255, 255, 255, 0.05);
+
+  --text-pure: #FFFFFF;
+  --text-heading: #F8FAFC;
+  --text-body: #CBD5E1;
+  --text-muted: #94A3B8;
+  --text-subtle: #64748B;
+
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.14);
+  --border-hover: rgba(255, 255, 255, 0.24);
+
+  --whatsapp-green: #25D366;
+  --whatsapp-hover: #20BD5A;
+  --whatsapp-glow: rgba(37, 211, 102, 0.35);
+
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-cinzel: 'Cinzel', serif;
+  --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --shadow-dark-card: 0 25px 50px -12px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --shadow-dark-hover: 0 35px 70px -15px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-canvas);
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-canvas);
+  color: var(--text-body);
+  line-height: 1.65;
+  overflow-x: hidden;
+  margin: 0;
+}
+
+/* Typography classes */
+h1, h2, h3, h4, .font-editorial {
+  font-family: var(--font-serif);
+  color: var(--text-pure);
+  letter-spacing: -0.02em;
+}
+
+.font-cinzel {
+  font-family: var(--font-cinzel);
+}
+
+.font-editorial-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+
+/* Editorial Numerals */
+.editorial-numeral {
+  font-family: var(--font-serif);
+  font-size: 3.25rem;
+  line-height: 1;
+  font-weight: 700;
+  color: #F8FAFC;
+  letter-spacing: -0.04em;
+  text-shadow: 0 0 24px rgba(255, 255, 255, 0.15);
+}
+
+@media (min-width: 640px) {
+  .editorial-numeral {
+    font-size: 4rem;
+  }
+}
+
+/* Architectural Dark Grid & Ambient Atmosphere */
+.bg-architectural-grid {
+  background-color: var(--bg-canvas);
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Containers */
+.container-chic {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .container-chic {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-chic {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+/* ==========================================================================
+   BUTTONS (DARK LUXURY)
+   ========================================================================== */
+
+/* Solid Green WhatsApp Button */
+.btn-whatsapp {
+  background-color: var(--whatsapp-green);
+  color: #FFFFFF !important;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border-radius: 9999px;
+  box-shadow: 0 10px 25px -4px var(--whatsapp-glow);
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-whatsapp:hover {
+  background-color: var(--whatsapp-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px -4px rgba(37, 211, 102, 0.55);
+  color: #FFFFFF !important;
+}
+
+.btn-whatsapp:active {
+  transform: translateY(0);
+}
+
+/* Primary Dark Button */
+.btn-charcoal {
+  background: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
+  color: #FFFFFF !important;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: all 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 0.875rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-charcoal:hover {
+  background: linear-gradient(180deg, #283548 0%, #172236 100%);
+  border-color: rgba(255, 255, 255, 0.32);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -5px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-charcoal:active {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   FROSTED GLASS & EDITORIAL CARDS (DARK LUXURY)
+   ========================================================================== */
+.frosted-glass {
+  background: var(--bg-card);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-dark-card);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.frosted-glass:hover {
+  border-color: var(--border-medium);
+  box-shadow: var(--shadow-dark-hover);
+}
+
+.frosted-pill {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #F8FAFC;
+}
+
+.dark-subcard {
+  background-color: rgba(10, 15, 28, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.dark-subcard:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  background-color: rgba(14, 21, 38, 0.85);
+}
+
+/* Form inputs (Dark Mode, high contrast, clean) */
+.form-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  margin-bottom: 0.375rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.875rem 1.125rem;
+  background-color: rgba(11, 16, 27, 0.85);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.75rem;
+  color: #FFFFFF;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  transition: all 0.22s ease;
+}
+
+.form-input::placeholder {
+  color: #475569;
+}
+
+.form-input:focus {
+  outline: none;
+  background-color: rgba(15, 23, 42, 0.95);
+  border-color: #38BDF8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18);
+}
+
+.country-select-wrapper select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  padding-right: 2.25rem;
+}
+
+.country-select-wrapper select option {
+  background-color: #0F172A;
+  color: #F8FAFC;
+}
+
+/* Sticky Project Quick-Jump Navigator */
+.sticky-subnav {
+  position: sticky;
+  top: 1rem;
+  z-index: 40;
+  transition: all 0.3s ease;
+}
+
+.subnav-pill {
+  transition: all 0.25s ease;
+}
+
+.subnav-pill.active {
+  background-color: #FFFFFF !important;
+  color: #070A11 !important;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.25);
+  font-weight: 700;
+}
+
+/* Floating WhatsApp Pulse */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.96);
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 18px rgba(37, 211, 102, 0);
+  }
+  100% {
+    transform: scale(0.96);
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+.pulse-whatsapp {
+  animation: pulse-ring 2.6s infinite;
+}
+
+/* Custom Scrollbar for Dark Canvas */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B0F17;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Responsive Image Hover */
+.editorial-image-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+}
+
+.editorial-image-frame img {
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editorial-image-frame:hover img {
+  transform: scale(1.04);
+}
