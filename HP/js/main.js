@@ -1,7 +1,7 @@
 /**
  * PROPERTIES-M.COM — HYDE PARK PORTFOLIO (/HP)
  * Role: Independent Real Estate Consultancy & Strategic Marketing Partner
- * Phone & WhatsApp: +20 100 356 5002 (+201003565002)
+ * Phone & WhatsApp: +20 127 775 2731 (01277752731)
  * Tracking: Google Tag AW-18495474156 & Conversion AW-18495474156/EvjICOTemJQdEOyTqvNE
  */
 
@@ -35,8 +35,8 @@ const countryCodes = [
 ];
 
 const CONFIG = {
-  whatsappNumber: '201003565002',
-  displayPhone: '+20 100 356 5002',
+  whatsappNumber: '201277752731',
+  displayPhone: '+20 127 775 2731',
   domain: 'properties-m.com',
   web3FormsKey: '9f6d054c-a955-4ed1-b85d-91c7f8b0a16a',
   zapierWebhookUrl: 'https://hooks.zapier.com/hooks/catch/25429357/uclzmpn/',
