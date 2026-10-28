@@ -267,7 +267,7 @@ function initLeadForm() {
       // Update modal WhatsApp button with pre-filled message
       if (modalWhatsAppBtn) {
         const encodedMsg = encodeURIComponent(`Hello, I just registered my interest for the ORA Developers portfolio on properties-m.com. My name is ${fullName} (${fullPhoneNumber}). Please provide me with the available brochures and inventory.`);
-        modalWhatsAppBtn.href = `https://wa.me/201033373331?text=${encodedMsg}`;
+        modalWhatsAppBtn.href = `https://wa.me/201277752731?text=${encodedMsg}`;
       }
 
     } catch (error) {
