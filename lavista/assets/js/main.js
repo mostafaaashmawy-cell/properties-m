@@ -151,7 +151,7 @@ function initLeadForm() {
     const fullName = nameInput ? nameInput.value.trim() : '';
     const rawPhone = phoneInput ? phoneInput.value.trim() : '';
     const countryCode = countryCodeInput ? countryCodeInput.value.trim() : '+20';
-    const projectPref = projectSelect ? projectSelect.value : 'General Portfolio Consultation';
+    const projectPref = projectSelect ? projectSelect.value : 'La Vista Developments Portfolio';
     const unitPref = unitSelect ? unitSelect.value : 'Any Typology';
 
     if (!fullName || fullName.length < 2) {
@@ -258,7 +258,7 @@ function initLeadForm() {
       // Update Modal WhatsApp Link with customized text
       const modalWhatsAppBtn = document.getElementById('modalWhatsAppBtn');
       if (modalWhatsAppBtn) {
-        const msg = encodeURIComponent(`Hello, I just registered my interest in La Vista Developments (${projectPref}) for ${fullName} (${fullPhoneNumber}). Please send me full brochures and availability.`);
+        const msg = encodeURIComponent(`Hello, I just registered my interest in La Vista Developments for ${fullName} (${fullPhoneNumber}). Please send me full brochures and availability.`);
         modalWhatsAppBtn.href = `${CONFIG.whatsappBaseUrl}?text=${msg}`;
       }
 

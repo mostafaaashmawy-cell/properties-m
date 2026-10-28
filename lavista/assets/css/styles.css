@@ -196,6 +196,34 @@ button, input, select {
   backdrop-filter: blur(10px);
 }
 
+.brand-showcase-vertical {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.96);
+  padding: 0.85rem 2.25rem;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.brand-partner-line {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-slate-muted);
+  font-weight: 700;
+  border-top: 1px solid var(--border-light);
+  padding-top: 0.45rem;
+  width: 100%;
+  justify-content: center;
+}
+
 .official-brand-logo-xl {
   height: 40px;
   width: auto;
