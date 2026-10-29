@@ -38,7 +38,6 @@ const CONFIG = {
   whatsappNumber: '201277752731',
   displayPhone: '+20 127 775 2731',
   domain: 'properties-m.com',
-  web3FormsKey: '9f6d054c-a955-4ed1-b85d-91c7f8b0a16a',
   zapierWebhookUrl: 'https://hooks.zapier.com/hooks/catch/25429357/uclzmpn/',
   storageKey: 'properties_m_hp_leads'
 };
@@ -63,7 +62,7 @@ function initCountryCodes() {
 }
 
 /**
- * Lead capture form handling (Web3Forms & Zapier Webhook & Google Ads Conversion)
+ * Lead capture form handling (Zapier Webhook & Google Ads Conversion)
  */
 function initLeadForm() {
   const form = document.getElementById('leadCaptureForm');
@@ -124,34 +123,21 @@ function initLeadForm() {
       source: 'Hyde Park Landing Page (/HP) — properties-m.com'
     };
 
-    // 1. Submit to Web3Forms API
+    // 1. Submit to Zapier Webhook
     try {
-      const formData = new FormData();
-      formData.append('access_key', CONFIG.web3FormsKey);
-      formData.append('name', fullName);
-      formData.append('phone', fullPhoneNumber);
-      formData.append('country_code', countryCode);
-      formData.append('page_url', window.location.href);
-      formData.append('subject', `New Private Lead: Hyde Park Portfolio (/HP) — ${fullName} (${fullPhoneNumber})`);
-      formData.append('from_name', 'Properties-M Real Estate Advisory');
-      formData.append('project', 'Hyde Park Portfolio (One Hyde Park, Sea Shore, Central)');
-
-      fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        body: formData
-      }).catch(err => console.warn('Web3Forms dispatch error:', err));
-    } catch (w3Err) {
-      console.warn('Web3Forms handler error:', w3Err);
-    }
-
-    // 2. Submit to Zapier Webhook
-    try {
-      fetch(CONFIG.zapierWebhookUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      }).catch(err => console.warn('Zapier dispatch error:', err));
+      try {
+        await fetch(CONFIG.zapierWebhookUrl, {
+          method: 'POST',
+          body: JSON.stringify(data)
+        });
+      } catch (fetchErr) {
+        console.warn('Standard fetch failed, attempting mode: no-cors fallback:', fetchErr);
+        await fetch(CONFIG.zapierWebhookUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: JSON.stringify(data)
+        });
+      }
     } catch (zapErr) {
       console.warn('Zapier handler error:', zapErr);
     }
