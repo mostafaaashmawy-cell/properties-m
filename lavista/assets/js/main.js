@@ -158,12 +158,10 @@ function initLeadForm() {
     const nameInput = document.getElementById('fullName');
     const phoneInput = document.getElementById('phoneNumber');
     const countryCodeInput = document.getElementById('selectedCountryCode');
-    const projectSelect = document.getElementById('projectPreference');
 
     const fullName = nameInput ? nameInput.value.trim() : '';
     const rawPhone = phoneInput ? phoneInput.value.trim() : '';
     const countryCode = countryCodeInput ? countryCodeInput.value.trim() : '+20';
-    const projectPref = projectSelect ? projectSelect.value : 'La Vista Developments Portfolio';
 
     if (!fullName || fullName.length < 2) {
       alert('Please enter your full name.');
@@ -195,7 +193,7 @@ function initLeadForm() {
       phoneNumber: fullPhoneNumber,
       countryCode: countryCode,
       rawPhone: rawPhone,
-      projectPreference: projectPref,
+      projectPreference: 'La Vista Developments Portfolio',
       developer: 'La Vista Developments',
       agency: CONFIG.brandName,
       portfolio: 'La Vista Developments (New Cairo & New Capital)',
@@ -270,7 +268,7 @@ function initLeadForm() {
 
     // Update modal WhatsApp direct action button
     if (modalWhatsAppBtn) {
-      const waMsg = encodeURIComponent(`Hello ${CONFIG.brandName}, I just registered my interest for the La Vista Developments portfolio. My name is ${fullName} (${fullPhoneNumber}). Please provide me with the available brochures, master plans, and unit pricing.`);
+      const waMsg = encodeURIComponent(`Hello, I just registered my interest for the La Vista Developments portfolio. My name is ${fullName} (${fullPhoneNumber}). Please provide me with the available brochures, master plans, and unit pricing.`);
       modalWhatsAppBtn.href = `${CONFIG.whatsappBaseUrl}?text=${waMsg}`;
       modalWhatsAppBtn.setAttribute('onclick', 'return gtag_report_conversion(this.href);');
     }
@@ -316,14 +314,9 @@ function initQuickNav() {
 function initProjectActionButtons() {
   const secondaryButtons = document.querySelectorAll('.btn-secondary-inquiry');
   const heroForm = document.getElementById('hero-lead-form');
-  const projectSelect = document.getElementById('projectPreference');
 
   secondaryButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      const projectName = btn.getAttribute('data-project');
-      if (projectSelect && projectName) {
-        projectSelect.value = projectName;
-      }
       if (heroForm) {
         heroForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
         const nameInput = document.getElementById('fullName');
