@@ -1,7 +1,7 @@
 /**
  * LA VISTA DEVELOPMENTS — PREMIER NEW CAIRO & CAPITAL PORTFOLIO
- * Operated & Curated by properties-m.com
- * Interactive Client Script, Multi-Channel Lead Dispatch & Tracking
+ * Curated & Operated by properties-m.com
+ * Interactive Client Script, Direct Zapier Webhook Lead Engine & Google Ads Conversion Tracking
  */
 
 const CONFIG = {
@@ -9,14 +9,13 @@ const CONFIG = {
   phoneDisplay: '+20 127 775 2731',
   whatsappRaw: '201277752731',
   whatsappBaseUrl: 'https://wa.me/201277752731',
-  domain: 'properties-m.com',
-  web3FormsKey: '9f6d054c-a955-4ed1-b85d-91c7f8b0a16a',
+  brandName: 'properties-m.com',
   zapierWebhookUrl: 'https://hooks.zapier.com/hooks/catch/25429357/uclzmpn/',
   storageKey: 'properties_m_lavista_leads',
   googleAdsConversionId: 'AW-18495474156/EvjICOTemJQdEOyTqvNE'
 };
 
-// Comprehensive Country Code Data
+// Comprehensive Country Code Data with Flag Emojis
 const countryCodes = [
   { name: 'Egypt', code: '+20', flag: '🇪🇬', default: true },
   { name: 'Saudi Arabia', code: '+966', flag: '🇸🇦' },
@@ -50,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Country Code Selector with Search Dropdown
+ * 1. International Country Code Selector Dropdown with Search
  */
 function initCountrySelector() {
   const btn = document.getElementById('countrySelectBtn');
@@ -65,50 +64,56 @@ function initCountrySelector() {
 
   function renderList(filter = '') {
     listContainer.innerHTML = '';
-    const cleanFilter = filter.toLowerCase().trim();
+    const query = filter.toLowerCase().trim();
     const filtered = countryCodes.filter(c => 
-      c.name.toLowerCase().includes(cleanFilter) || 
-      c.code.includes(cleanFilter)
+      c.name.toLowerCase().includes(query) || 
+      c.code.includes(query)
     );
 
     if (filtered.length === 0) {
-      const empty = document.createElement('div');
-      empty.style.padding = '0.75rem';
-      empty.style.fontSize = '0.8rem';
-      empty.style.color = '#94A3B8';
-      empty.style.textAlign = 'center';
-      empty.textContent = 'No matching country';
-      listContainer.appendChild(empty);
+      listContainer.innerHTML = '<div style="padding: 12px; font-size: 0.8rem; color: #94A3B8; text-align: center;">No matching country</div>';
       return;
     }
 
     filtered.forEach(item => {
-      const row = document.createElement('div');
-      row.className = 'country-item-option';
-      row.innerHTML = `
-        <span>${item.flag} ${item.name}</span>
-        <strong style="color: #64748B;">${item.code}</strong>
+      const option = document.createElement('div');
+      option.className = `country-option ${item.code === hiddenCodeInput.value ? 'selected' : ''}`;
+      option.innerHTML = `
+        <div style="display:flex; align-items:center; gap: 8px;">
+          <span>${item.flag}</span>
+          <span>${item.name}</span>
+        </div>
+        <span style="color: #94A3B8; font-weight: 600;">${item.code}</span>
       `;
-      row.addEventListener('click', (e) => {
+      option.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (hiddenCodeInput) hiddenCodeInput.value = item.code;
-        if (flagDisplay) flagDisplay.textContent = item.flag;
-        if (codeDisplay) codeDisplay.textContent = item.code;
+        hiddenCodeInput.value = item.code;
+        flagDisplay.textContent = item.flag;
+        codeDisplay.textContent = item.code;
         menu.classList.remove('active');
-        if (searchInput) searchInput.value = '';
+        btn.setAttribute('aria-expanded', 'false');
       });
-      listContainer.appendChild(row);
+      listContainer.appendChild(option);
     });
   }
 
+  // Initial render
   renderList();
 
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
-    const isActive = menu.classList.contains('active');
-    menu.classList.toggle('active');
-    if (!isActive && searchInput) {
-      setTimeout(() => searchInput.focus(), 50);
+    const isOpen = menu.classList.contains('active');
+    if (isOpen) {
+      menu.classList.remove('active');
+      btn.setAttribute('aria-expanded', 'false');
+    } else {
+      menu.classList.add('active');
+      btn.setAttribute('aria-expanded', 'true');
+      if (searchInput) {
+        searchInput.value = '';
+        renderList();
+        setTimeout(() => searchInput.focus(), 60);
+      }
     }
   });
 
@@ -119,40 +124,46 @@ function initCountrySelector() {
     searchInput.addEventListener('click', (e) => e.stopPropagation());
   }
 
-  document.addEventListener('click', () => {
-    menu.classList.remove('active');
+  document.addEventListener('click', (e) => {
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+      menu.classList.remove('active');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu.classList.contains('active')) {
+      menu.classList.remove('active');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.focus();
+    }
   });
 }
 
 /**
- * Lead Form Submission (Web3Forms API + Zapier Webhook + Google Ads Conversion)
+ * 2. Lead Capture Form with Direct Zapier Webhook Only (Zero Web3Forms)
  */
 function initLeadForm() {
   const form = document.getElementById('interestLeadForm');
-  if (!form) return;
+  const submitBtn = document.getElementById('formSubmitBtn');
+  const modalBackdrop = document.getElementById('leadSuccessModal');
+  const modalWhatsAppBtn = document.getElementById('modalWhatsAppBtn');
+  const inlineSuccess = document.getElementById('formSuccessInline');
 
-  const phoneInput = document.getElementById('phoneNumber');
-  if (phoneInput) {
-    phoneInput.addEventListener('input', (e) => {
-      // Allow only numbers and spaces
-      e.target.value = e.target.value.replace(/[^0-9\s-]/g, '');
-    });
-  }
+  if (!form) return;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const nameInput = document.getElementById('fullName');
+    const phoneInput = document.getElementById('phoneNumber');
     const countryCodeInput = document.getElementById('selectedCountryCode');
     const projectSelect = document.getElementById('projectPreference');
-    const unitSelect = document.getElementById('unitTypePreference');
-    const submitBtn = document.getElementById('formSubmitBtn');
 
     const fullName = nameInput ? nameInput.value.trim() : '';
     const rawPhone = phoneInput ? phoneInput.value.trim() : '';
     const countryCode = countryCodeInput ? countryCodeInput.value.trim() : '+20';
     const projectPref = projectSelect ? projectSelect.value : 'La Vista Developments Portfolio';
-    const unitPref = unitSelect ? unitSelect.value : 'Any Typology';
 
     if (!fullName || fullName.length < 2) {
       alert('Please enter your full name.');
@@ -183,49 +194,46 @@ function initLeadForm() {
       fullName: fullName,
       phoneNumber: fullPhoneNumber,
       countryCode: countryCode,
+      rawPhone: rawPhone,
       projectPreference: projectPref,
-      unitTypePreference: unitPref,
       developer: 'La Vista Developments',
-      domain: CONFIG.domain,
+      agency: CONFIG.brandName,
+      portfolio: 'La Vista Developments (New Cairo & New Capital)',
       landingPageUrl: window.location.href,
-      submissionTime: new Date().toISOString(),
-      source: 'La Vista Portfolio (/lavista) — properties-m.com'
+      submissionDate: new Date().toISOString(),
+      source: `La Vista Portfolio (/La-vista) — ${CONFIG.brandName}`
     };
 
-    // 1. Submit to Web3Forms API
+    // 1. Submit Directly to Zapier Webhook (No Web3Forms)
     try {
-      const formData = new FormData();
-      formData.append('access_key', CONFIG.web3FormsKey);
-      formData.append('name', fullName);
-      formData.append('phone', fullPhoneNumber);
-      formData.append('country_code', countryCode);
-      formData.append('project_interest', projectPref);
-      formData.append('unit_type', unitPref);
-      formData.append('page_url', window.location.href);
-      formData.append('subject', `Exclusive Lead: La Vista Portfolio (${projectPref}) — ${fullName} [${fullPhoneNumber}]`);
-      formData.append('from_name', 'Properties-M Luxury Advisory');
-
-      fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        body: formData
-      }).catch(err => console.warn('Web3Forms dispatch notice:', err));
-    } catch (err) {
-      console.warn('Web3Forms handler error:', err);
+      try {
+        await fetch(CONFIG.zapierWebhookUrl, {
+          method: 'POST',
+          body: JSON.stringify(leadPayload)
+        });
+        console.log('Lead transmitted to Zapier successfully');
+      } catch (zapierStandardErr) {
+        console.warn('Standard fetch to Zapier failed, trying mode: no-cors:', zapierStandardErr);
+        await fetch(CONFIG.zapierWebhookUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: JSON.stringify(leadPayload)
+        });
+      }
+    } catch (zapErr) {
+      console.warn('Zapier transmission notice:', zapErr);
     }
 
-    // 2. Submit to Zapier Webhook
+    // 2. Archive to LocalStorage
     try {
-      fetch(CONFIG.zapierWebhookUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(leadPayload)
-      }).catch(err => console.warn('Zapier dispatch notice:', err));
-    } catch (err) {
-      console.warn('Zapier handler error:', err);
+      const storedLeads = JSON.parse(localStorage.getItem(CONFIG.storageKey) || '[]');
+      storedLeads.push(leadPayload);
+      localStorage.setItem(CONFIG.storageKey, JSON.stringify(storedLeads));
+    } catch (storageErr) {
+      console.warn('LocalStorage notice:', storageErr);
     }
 
-    // 3. Trigger Google Ads Conversion Tracking
+    // 3. Trigger Google Ads Conversion Tracking (Hydepark conversion code)
     try {
       if (typeof window.gtag_report_conversion === 'function') {
         window.gtag_report_conversion();
@@ -236,134 +244,121 @@ function initLeadForm() {
           'currency': 'EGP'
         });
       }
-    } catch (err) {
-      console.warn('Conversion tracking notice:', err);
+    } catch (trackingErr) {
+      console.warn('Google Ads Conversion tracking error:', trackingErr);
     }
 
-    // 4. LocalStorage Backup
-    try {
-      const stored = JSON.parse(localStorage.getItem(CONFIG.storageKey) || '[]');
-      stored.push(leadPayload);
-      localStorage.setItem(CONFIG.storageKey, JSON.stringify(stored));
-    } catch (e) {
-      console.warn('LocalStorage notice:', e);
+    // Reset button
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = originalBtnContent;
+
+    // Reset form fields
+    form.reset();
+    if (countryCodeInput) countryCodeInput.value = '+20';
+    const flagDisplay = document.getElementById('selectedCountryFlag');
+    const codeDisplay = document.getElementById('selectedCountryCodeText');
+    if (flagDisplay) flagDisplay.textContent = '🇪🇬';
+    if (codeDisplay) codeDisplay.textContent = '+20';
+
+    // Show Inline Success Banner
+    if (inlineSuccess) {
+      inlineSuccess.style.display = 'block';
+      setTimeout(() => {
+        inlineSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
     }
 
-    // Show Confirmation Modal
-    setTimeout(() => {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = originalBtnContent;
-      form.reset();
+    // Update modal WhatsApp direct action button
+    if (modalWhatsAppBtn) {
+      const waMsg = encodeURIComponent(`Hello ${CONFIG.brandName}, I just registered my interest for the La Vista Developments portfolio. My name is ${fullName} (${fullPhoneNumber}). Please provide me with the available brochures, master plans, and unit pricing.`);
+      modalWhatsAppBtn.href = `${CONFIG.whatsappBaseUrl}?text=${waMsg}`;
+      modalWhatsAppBtn.setAttribute('onclick', 'return gtag_report_conversion(this.href);');
+    }
 
-      // Update Modal WhatsApp Link with customized text
-      const modalWhatsAppBtn = document.getElementById('modalWhatsAppBtn');
-      if (modalWhatsAppBtn) {
-        const msg = encodeURIComponent(`Hello, I just registered my interest in La Vista Developments for ${fullName} (${fullPhoneNumber}). Please send me full brochures and availability.`);
-        modalWhatsAppBtn.href = `${CONFIG.whatsappBaseUrl}?text=${msg}`;
-      }
-
-      openModal();
-    }, 600);
+    // Reveal Confirmation Modal
+    if (modalBackdrop) {
+      modalBackdrop.classList.add('show');
+    }
   });
 }
 
 /**
- * Quick Navigation Pills & Smooth Scrolling
+ * 3. Portfolio Quick Navigation
  */
 function initQuickNav() {
   const pills = document.querySelectorAll('.nav-jump-pill');
   if (!pills.length) return;
 
   pills.forEach(pill => {
-    pill.addEventListener('click', (e) => {
-      e.preventDefault();
+    pill.addEventListener('click', () => {
       const targetId = pill.getAttribute('data-target');
       pills.forEach(p => p.classList.remove('active'));
       pill.classList.add('active');
 
       if (targetId === 'all') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        return;
-      }
-
-      const targetEl = document.getElementById(targetId);
-      if (targetEl) {
-        const navHeight = document.querySelector('.quick-nav-wrapper')?.offsetHeight || 60;
-        const targetPos = targetEl.getBoundingClientRect().top + window.pageYOffset - navHeight - 10;
-        window.scrollTo({ top: targetPos, behavior: 'smooth' });
-      }
-    });
-  });
-}
-
-/**
- * Project Card Action Buttons:
- * Secondary "Request Brochure" button pre-selects project in form and scrolls to it
- */
-function initProjectActionButtons() {
-  const reqButtons = document.querySelectorAll('.btn-secondary-inquiry');
-  const projectSelect = document.getElementById('projectPreference');
-  const formCard = document.getElementById('hero-lead-form');
-
-  reqButtons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const projectName = btn.getAttribute('data-project');
-      if (projectSelect && projectName) {
-        // Look for matching option
-        for (let opt of projectSelect.options) {
-          if (opt.value.toLowerCase().includes(projectName.toLowerCase())) {
-            opt.selected = true;
-            break;
-          }
+        const firstSection = document.getElementById('el-patio-town-side');
+        if (firstSection) {
+          firstSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      } else {
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       }
+    });
+  });
+}
 
-      if (formCard) {
-        formCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+/**
+ * 4. Project Action Buttons (Secondary CTA)
+ */
+function initProjectActionButtons() {
+  const secondaryButtons = document.querySelectorAll('.btn-secondary-inquiry');
+  const heroForm = document.getElementById('hero-lead-form');
+  const projectSelect = document.getElementById('projectPreference');
+
+  secondaryButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const projectName = btn.getAttribute('data-project');
+      if (projectSelect && projectName) {
+        projectSelect.value = projectName;
+      }
+      if (heroForm) {
+        heroForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
         const nameInput = document.getElementById('fullName');
-        if (nameInput) setTimeout(() => nameInput.focus(), 600);
+        if (nameInput) {
+          setTimeout(() => nameInput.focus(), 600);
+        }
       }
     });
   });
 }
 
 /**
- * Modal Open/Close Controls
+ * 5. Modal Handlers
  */
 function initModalHandlers() {
-  const modal = document.getElementById('leadSuccessModal');
-  const closeBtn = document.getElementById('modalCloseBtn');
+  const modalBackdrop = document.getElementById('leadSuccessModal');
+  const modalCloseBtn = document.getElementById('modalCloseBtn');
 
-  if (!modal) return;
-
-  if (closeBtn) {
-    closeBtn.addEventListener('click', closeModal);
+  if (modalCloseBtn && modalBackdrop) {
+    modalCloseBtn.addEventListener('click', () => {
+      modalBackdrop.classList.remove('show');
+    });
   }
 
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
-  });
+  if (modalBackdrop) {
+    modalBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalBackdrop) {
+        modalBackdrop.classList.remove('show');
+      }
+    });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('active')) {
-      closeModal();
-    }
-  });
-}
-
-function openModal() {
-  const modal = document.getElementById('leadSuccessModal');
-  if (modal) {
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-}
-
-function closeModal() {
-  const modal = document.getElementById('leadSuccessModal');
-  if (modal) {
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modalBackdrop.classList.contains('show')) {
+        modalBackdrop.classList.remove('show');
+      }
+    });
   }
 }

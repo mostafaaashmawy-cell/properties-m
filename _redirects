@@ -4,7 +4,11 @@
 /hydepark/* /Hydepark/:splat 301
 /hp /HP/ 301
 /hp/* /HP/:splat 301
-/Lavista /lavista/ 301
-/Lavista/* /lavista/:splat 301
-/la-vista /lavista/ 301
-/la-vista/* /lavista/:splat 301
+/la-vista /La-vista/ 301
+/la-vista/* /La-vista/:splat 301
+/La-vista /La-vista/ 301
+/La-vista/* /La-vista/:splat 301
+/Lavista /La-vista/ 301
+/Lavista/* /La-vista/:splat 301
+/lavista /La-vista/ 301
+/lavista/* /La-vista/:splat 301
