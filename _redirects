@@ -6,8 +6,6 @@
 /hp/* /HP/:splat 301
 /la-vista /La-vista/ 301
 /la-vista/* /La-vista/:splat 301
-/La-vista /La-vista/ 301
-/La-vista/* /La-vista/:splat 301
 /Lavista /La-vista/ 301
 /Lavista/* /La-vista/:splat 301
 /lavista /La-vista/ 301
