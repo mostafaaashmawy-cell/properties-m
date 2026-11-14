@@ -281,31 +281,68 @@ function initLeadForm() {
 }
 
 /**
- * 3. Portfolio Quick Navigation
+ * 3. Portfolio Quick Navigation & Anchor Link Engine
  */
 function initQuickNav() {
   const pills = document.querySelectorAll('.nav-jump-pill');
-  if (!pills.length) return;
 
-  pills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      const targetId = pill.getAttribute('data-target');
-      pills.forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
+  function activateTarget(targetId, updateHash = true) {
+    if (!targetId) return;
+    const targetElement = document.getElementById(targetId);
+    if (!targetElement) return;
 
-      if (targetId === 'all') {
-        const firstSection = document.getElementById('el-patio-town-side');
-        if (firstSection) {
-          firstSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    pills.forEach(p => {
+      const pTarget = p.getAttribute('data-target') || p.getAttribute('href')?.replace('#', '');
+      if (pTarget === targetId) {
+        p.classList.add('active');
+        if (p.scrollIntoViewIfNeeded) {
+          p.scrollIntoViewIfNeeded();
         }
       } else {
-        const targetElement = document.getElementById(targetId);
-        if (targetElement) {
-          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        p.classList.remove('active');
+      }
+    });
+
+    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    if (updateHash && history.pushState) {
+      history.pushState(null, null, `#${targetId}`);
+    }
+  }
+
+  // Handle Quick-Jump Pills
+  pills.forEach(pill => {
+    pill.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = pill.getAttribute('data-target') || pill.getAttribute('href')?.replace('#', '');
+      activateTarget(targetId, true);
+    });
+  });
+
+  // Handle in-page Anchor Links (Project Anchor Tags, Footer Anchor Links)
+  const anchorLinks = document.querySelectorAll('a[href^="#"]');
+  anchorLinks.forEach(link => {
+    if (link.classList.contains('nav-jump-pill')) return;
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (href && href.length > 1) {
+        const targetId = href.substring(1);
+        const targetEl = document.getElementById(targetId);
+        if (targetEl) {
+          e.preventDefault();
+          activateTarget(targetId, true);
         }
       }
     });
   });
+
+  // Handle initial direct deep link via URL hash
+  if (window.location.hash) {
+    const initialId = window.location.hash.substring(1);
+    setTimeout(() => {
+      activateTarget(initialId, false);
+    }, 350);
+  }
 }
 
 /**

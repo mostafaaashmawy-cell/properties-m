@@ -893,6 +893,16 @@ button, input, select {
   text-align: left;
 }
 
+.project-header-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  margin-bottom: 0.75rem;
+}
+
 .project-header-badge {
   display: inline-flex;
   align-items: center;
@@ -902,7 +912,92 @@ button, input, select {
   text-transform: uppercase;
   color: #34D399;
   font-weight: 700;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0;
+}
+
+.project-anchor-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.74rem;
+  font-family: var(--font-sans);
+  color: var(--text-slate-muted);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.22rem 0.65rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.project-anchor-tag svg {
+  width: 12px;
+  height: 12px;
+  color: #34D399;
+  flex-shrink: 0;
+}
+
+.project-anchor-tag:hover {
+  color: var(--text-white);
+  background: rgba(52, 211, 153, 0.15);
+  border-color: rgba(52, 211, 153, 0.4);
+  transform: translateY(-1px);
+}
+
+.project-titles-block {
+  margin-bottom: 1.15rem;
+  width: 100%;
+}
+
+.project-title-h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.9rem, 3.2vw, 2.75rem);
+  font-weight: 700;
+  color: var(--text-white);
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.6rem 1rem;
+}
+
+.project-title-h1 .title-en {
+  color: var(--text-white);
+}
+
+.project-title-h1 .title-ar {
+  font-family: var(--font-sans);
+  font-size: clamp(1.3rem, 2.2vw, 1.85rem);
+  font-weight: 600;
+  color: #94A3B8;
+  letter-spacing: normal;
+}
+
+.project-title-h2 {
+  font-family: var(--font-sans);
+  font-size: clamp(0.92rem, 1.3vw, 1.05rem);
+  font-weight: 600;
+  color: #38BDF8;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+}
+
+.project-title-h2 .subtitle-ar {
+  color: #A5F3FC;
+  font-weight: 500;
+}
+
+.project-title-h2 .subtitle-divider {
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.75rem;
 }
 
 .project-title {
@@ -1470,6 +1565,15 @@ button, input, select {
   margin: 0 auto 3.5rem;
 }
 
+.coastal-header-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin-bottom: 0.85rem;
+}
+
 .coastal-kicker {
   display: inline-block;
   font-size: 0.8rem;
@@ -1477,8 +1581,86 @@ button, input, select {
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: #4A5568;
-  margin-bottom: 0.85rem;
   font-family: var(--font-sans);
+}
+
+.coastal-anchor-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.74rem;
+  font-family: var(--font-sans);
+  color: #4A5568;
+  background: #EDF2F7;
+  border: 1px solid rgba(26, 32, 44, 0.12);
+  padding: 0.22rem 0.65rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.coastal-anchor-tag svg {
+  width: 12px;
+  height: 12px;
+  color: #2D3748;
+}
+
+.coastal-anchor-tag:hover {
+  color: #1A202C;
+  background: #E2E8F0;
+  border-color: rgba(26, 32, 44, 0.3);
+  transform: translateY(-1px);
+}
+
+.coastal-main-heading-h1 {
+  font-family: var(--font-sans);
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  font-weight: 800;
+  color: #1A202C;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.6rem 1rem;
+}
+
+.coastal-main-heading-h1 .title-en {
+  color: #1A202C;
+}
+
+.coastal-main-heading-h1 .title-ar {
+  font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+  font-weight: 600;
+  color: #4A5568;
+  letter-spacing: normal;
+}
+
+.coastal-main-heading-h2 {
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  font-weight: 600;
+  color: #2D3748;
+  line-height: 1.5;
+  margin: 0 0 1.25rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem 0.6rem;
+}
+
+.coastal-main-heading-h2 .subtitle-ar {
+  color: #4A5568;
+  font-weight: 500;
+}
+
+.coastal-main-heading-h2 .subtitle-divider {
+  color: #CBD5E1;
+  font-size: 0.8rem;
 }
 
 .coastal-main-heading {
@@ -1705,6 +1887,92 @@ button, input, select {
 }
 
 /* ==========================================================================
+   SCROLL MARGIN & ANCHOR LINK STYLES
+   ========================================================================== */
+.project-fullwidth-section,
+.coastal-collection-section,
+.pillars-section,
+.advisory-strip-section,
+.footer-section,
+.hero-wrapper {
+  scroll-margin-top: 80px;
+}
+
+/* Hero Arabic Subheading */
+.hero-arabic-headline {
+  font-family: var(--font-sans);
+  font-size: clamp(1.1rem, 1.8vw, 1.45rem);
+  font-weight: 600;
+  color: #94A3B8;
+  margin-top: -0.5rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+/* Section Arabic Sub-headings (Pillars & Advisory) */
+.section-heading-ar {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+  font-weight: 600;
+  color: #94A3B8;
+  margin-top: 0.4rem;
+  letter-spacing: normal;
+}
+
+.section-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Footer Anchor Directory */
+.footer-anchor-directory {
+  width: 100%;
+  padding: 1.5rem 0 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.footer-anchor-title {
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #34D399;
+  font-weight: 700;
+}
+
+.footer-anchor-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.footer-anchor-link {
+  font-size: 0.88rem;
+  color: var(--text-slate-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-anchor-link:hover {
+  color: #34D399;
+}
+
+.footer-anchor-dot {
+  color: var(--border-medium);
+  font-size: 0.75rem;
+  user-select: none;
+}
+
+/* ==========================================================================
    RESPONSIVE DESIGN (MEDIA QUERIES)
    ========================================================================== */
 @media (max-width: 1024px) {
@@ -1719,6 +1987,20 @@ button, input, select {
 
   .project-info-column {
     align-items: center;
+    text-align: center;
+  }
+
+  .project-header-meta {
+    justify-content: center;
+  }
+
+  .project-title-h1 {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .project-title-h2 {
+    justify-content: center;
     text-align: center;
   }
 
@@ -1768,7 +2050,85 @@ button, input, select {
   }
 
   .quick-nav-wrapper {
-    display: none; /* Hide quick bar on small mobile to maximize screen view */
+    display: block;
+    padding: 0.45rem 0;
+  }
+
+  .quick-nav-container {
+    justify-content: flex-start;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .quick-nav-brand {
+    display: none;
+  }
+
+  .quick-nav-cta {
+    display: none;
+  }
+
+  .quick-nav-pills {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0.35rem;
+    width: 100%;
+    padding-bottom: 2px;
+  }
+
+  .quick-nav-pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-jump-pill {
+    padding: 5px 12px;
+    font-size: 0.72rem;
+    flex-shrink: 0;
+  }
+
+  .project-header-meta {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .project-title-h1 {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 1.75rem;
+  }
+
+  .project-title-h1 .title-ar {
+    font-size: 1.25rem;
+  }
+
+  .project-title-h2 {
+    font-size: 0.86rem;
+    line-height: 1.4;
+  }
+
+  .coastal-header-meta {
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .coastal-main-heading-h1 {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 1.85rem;
+  }
+
+  .coastal-main-heading-h1 .title-ar {
+    font-size: 1.3rem;
+  }
+
+  .coastal-main-heading-h2 {
+    font-size: 0.92rem;
   }
 
   .pillars-grid {
